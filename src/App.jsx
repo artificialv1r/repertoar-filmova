@@ -1,67 +1,40 @@
 import React from "react";
-import Movie from "./components/Movie";
+import Movies from "./components/Movies";
+import Home from "./components/Home";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import About from "./components/About";
+import AppInfo from "./components/AppInfo";
+import AuthorInfo from "./components/AuthorInfo";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const App = () => {
-  const movies = [
-    {
-      title: "Captain America - The First Avenger",
-      hall: 2,
-      price: 350,
-      poster:
-        "https://m.media-amazon.com/images/I/51Xp+8qDCbL._AC_UF350,350_QL50_.jpg",
-    },
-    {
-      title: "The Papillon",
-      hall: 1,
-      price: 300,
-      poster:
-        "https://m.media-amazon.com/images/M/MV5BMjIxMTMyOTE2NF5BMl5BanBnXkFtZTgwMDYyNzY1NTM@._V1_.jpg",
-    },
-    {
-      title: "The Lost City of Z",
-      hall: 5,
-      price: 350,
-      poster:
-        "https://m.media-amazon.com/images/M/MV5BZmU2ODIyMWItMjU3Zi00ZmVhLWIyNDAtMWE5OWU2ZDExMGFiXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
-    },
-    {
-      title: "Klaus",
-      hall: 3,
-      poster: "https://m.media-amazon.com/images/I/7128yjOjl9L.jpg",
-    },
-    {
-      title: "Bullet Train",
-      poster:
-        "https://m.media-amazon.com/images/I/71INz6LX8aL._AC_UF894,1000_QL80_.jpg",
-    },
-  ];
-
-  const now = new Date();
-  const date = now.toLocaleDateString().replace(/\//g, ".");
-
-  const likeMovie = (title) => {
-    alert("Dodelili ste Like za film: " + title);
-  };
-
-  const dislikeMovie = (title) => {
-    alert("Dodelili ste Dislike za film: " + title);
-  };
-
   return (
-    <div>
-      <h1>Repertoar za danas ({date})</h1>
-      {movies.map((m, index) => (
-        <Movie
-          key={index}
-          title={m.title}
-          hall={m.hall}
-          price={m.price}
-          poster={m.poster}
-          onLike={likeMovie}
-          onDislike={dislikeMovie}
-        />
-      ))}
-    </div>
+    <>
+      <BrowserRouter>
+        <div
+          style={{
+            minHeight: "100dvh",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Header />
+          <div style={{ flex: 1 }}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />}>
+                <Route index element={<AppInfo />} />
+                <Route path="app" element={<AppInfo />} />
+                <Route path="author" element={<AuthorInfo />} />
+              </Route>
+              <Route path="/movies" element={<Movies />} />
+            </Routes>
+          </div>
+          <Footer />
+        </div>
+      </BrowserRouter>
+    </>
   );
 };
 

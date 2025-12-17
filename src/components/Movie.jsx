@@ -11,7 +11,11 @@ const Movie = (props) => {
       }}
     >
       <div style={{ width: "100px", paddingBottom: "20px" }}>
-        <img src={props.poster} alt="movie img" style={{ width: "100%" }} />
+        <img
+          src={props.poster}
+          alt="movie img"
+          style={{ width: "100%", borderRadius: "6px" }}
+        />
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <button onClick={() => props.onLike(props.title)}>Like</button>
           <button onClick={() => props.onDislike(props.title)}>Dislike</button>
