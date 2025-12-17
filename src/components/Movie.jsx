@@ -10,13 +10,16 @@ const Movie = (props) => {
         gap: "15px",
       }}
     >
-      <img
-        src="https://i.pinimg.com/736x/aa/f7/05/aaf705e06726ce3881288ae4be3ac5fe.jpg"
-        alt="movie img"
-        width={"80px"}
-      />
+      <div style={{ width: "100px", paddingBottom: "20px" }}>
+        <img src={props.poster} alt="movie img" style={{ width: "100%" }} />
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <button onClick={() => props.onLike(props.title)}>Like</button>
+          <button onClick={() => props.onDislike(props.title)}>Dislike</button>
+        </div>
+      </div>
       <p style={{ fontSize: "20px" }}>
-        {props.title}, sala: {props.hall}, cena: {props.price}din
+        {props.title}, sala: {props.hall || "Film još uvek nije u ponudi"},
+        cena: {props.price || "300"}din
       </p>
     </div>
   );
