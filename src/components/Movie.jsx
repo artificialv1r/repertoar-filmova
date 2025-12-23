@@ -6,7 +6,7 @@ const Movie = (props) => {
       style={{
         display: "flex",
         paddingLeft: "20px",
-        alignItems: "center",
+        alignItems: "flex-start",
         gap: "15px",
       }}
     >
@@ -21,7 +21,14 @@ const Movie = (props) => {
           <button onClick={() => props.onDislike(props.title)}>Dislike</button>
         </div>
       </div>
-      <div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "flex-start",
+        }}
+      >
         <p style={{ fontSize: "20px" }}>
           {props.title}, sala: {props.hall || "Film još uvek nije u ponudi"},
           cena: {props.price || "300"}din
@@ -29,6 +36,7 @@ const Movie = (props) => {
         <p>
           Likes: {props.likes} | Dislikes: {props.dislikes}
         </p>
+        <button onClick={() => props.onEdit(props)}>Izmeni</button>
       </div>
     </div>
   );

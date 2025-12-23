@@ -1,8 +1,14 @@
 import React from "react";
 import Movie from "./Movie";
+import MovieForm from "./MovieForm";
+import MovieEditForm from "./MovieEditForm";
 import { useState } from "react";
 
 const Movies = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [movieToEdit, setMovieToEdit] = useState(null);
+
   const [movies, setMovies] = useState([
     {
       title: "Captain America - The First Avenger",
@@ -47,6 +53,9 @@ const Movies = () => {
     },
   ]);
 
+  const addMovie = (newMovie) => {
+    setMovies((prev) => [...prev, newMovie]);
+  };
   const now = new Date();
   const date = now.toLocaleDateString().replace(/\//g, ".");
 
@@ -66,6 +75,39 @@ const Movies = () => {
           : movie
       )
     );
+  };
+
+  const updateMovie = (updatedMovie) => {
+    setMovies((prev) =>
+      prev.map((m) => (m.title === movieToEdit.title ? updatedMovie : m))
+    );
+  };
+
+  const openEditModal = (movie) => {
+    setMovieToEdit(movie);
+    setIsEditModalOpen(true);
+  };
+
+  const modalOverlay = {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100vw",
+    height: "100vh",
+    backgroundColor: "rgba(0,0,0,0.6)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1000,
+  };
+
+  const modalContent = {
+    backgroundColor: "#fff",
+    padding: "20px",
+    borderRadius: "8px",
+    width: "400px",
+    display: "flex",
+    flexDirection: "column",
   };
 
   return (
@@ -90,9 +132,89 @@ const Movies = () => {
             onDislike={dislikeMovie}
             likes={m.likes}
             dislikes={m.dislikes}
+            onEdit={openEditModal}
           />
         ))}
       </div>
+      <div style={{ textAlign: "center", margin: "20px 0" }}>
+        <button onClick={() => setIsModalOpen(true)}>+ Dodaj novi film</button>
+      </div>
+
+      {isModalOpen && (
+        <div style={modalOverlay}>
+          <div style={modalContent}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <h2>Dodaj novi film</h2>
+              <button
+                style={{
+                  width: "fit-content",
+                  height: "fit-content",
+                  fontWeight: "bold",
+                  fontSize: "18px",
+                  background: "transparent",
+                  border: "none",
+                  color: "#FF5555",
+                  cursor: "pointer",
+                }}
+                onClick={() => setIsModalOpen(false)}
+              >
+                X
+              </button>
+            </div>
+            <div>
+              <MovieForm
+                onAddMovie={(movie) => {
+                  addMovie(movie);
+                  setIsModalOpen(false);
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isEditModalOpen && (
+        <div style={modalOverlay}>
+          <div style={modalContent}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <h2>Izmeni film</h2>
+              <button
+                style={{
+                  width: "fit-content",
+                  height: "fit-content",
+                  fontWeight: "bold",
+                  fontSize: "18px",
+                  background: "transparent",
+                  border: "none",
+                  color: "#FF5555",
+                  cursor: "pointer",
+                }}
+                onClick={() => setIsEditModalOpen(false)}
+              >
+                X
+              </button>
+            </div>
+
+            <MovieEditForm
+              movie={movieToEdit}
+              onUpdateMovie={updateMovie}
+              onClose={() => setIsEditModalOpen(false)}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
