@@ -21,10 +21,15 @@ const Movie = (props) => {
           <button onClick={() => props.onDislike(props.title)}>Dislike</button>
         </div>
       </div>
-      <p style={{ fontSize: "20px" }}>
-        {props.title}, sala: {props.hall || "Film još uvek nije u ponudi"},
-        cena: {props.price || "300"}din
-      </p>
+      <div>
+        <p style={{ fontSize: "20px" }}>
+          {props.title}, sala: {props.hall || "Film još uvek nije u ponudi"},
+          cena: {props.price || "300"}din
+        </p>
+        <p>
+          Likes: {props.likes} | Dislikes: {props.dislikes}
+        </p>
+      </div>
     </div>
   );
 };
