@@ -2,7 +2,7 @@ import React from "react";
 import Movie from "./Movie";
 import MovieForm from "./MovieForm";
 import MovieEditForm from "./MovieEditForm";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Movies = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -87,6 +87,23 @@ const Movies = () => {
     setMovieToEdit(movie);
     setIsEditModalOpen(true);
   };
+
+  useEffect(() => {
+    const rating = [...movies].sort(
+      (a, b) => b.likes - b.dislikes - (a.likes - a.dislikes)
+    );
+    if (rating[0].title !== movies[0].title) {
+      setMovies(rating);
+    }
+  }, [movies]);
+
+  useEffect(() => {
+    console.log("Postavka filmova");
+
+    return () => {
+      console.log("Sklanjanje filmova");
+    };
+  }, []);
 
   const modalOverlay = {
     position: "fixed",

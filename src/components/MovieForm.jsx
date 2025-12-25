@@ -7,11 +7,12 @@ function MovieForm({ onAddMovie }) {
   const onSubmit = (data) => {
     onAddMovie({
       ...data,
-      likes: 0,
-      dislikes: 0,
+      likes: Math.floor(Math.random() * 5) + 1,
+      dislikes: Math.floor(Math.random() * 5) + 1,
     });
     reset();
   };
+
   const labelStyle = {
     display: "flex",
     flexDirection: "column",
