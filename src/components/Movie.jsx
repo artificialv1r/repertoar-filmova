@@ -18,7 +18,7 @@ const Movie = (props) => {
         <button onClick={() => props.onLike(props.id)}>👍</button>
         <button onClick={() => props.onDislike(props.id)}>👎</button>
         <button onClick={() => props.onEdit(props)}>Izmeni</button>
-        {/* <button>Obrisi</button> */}
+        <button onClick={() => props.onDelete(props.id)}>Obrisi</button>
       </div>
     </div>
   );
