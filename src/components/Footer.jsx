@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <div
       style={{
-        background: "whitesmoke",
+        background: "#d0d0d0",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

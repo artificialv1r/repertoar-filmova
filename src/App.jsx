@@ -7,7 +7,9 @@ import About from "./components/About";
 import AppInfo from "./components/AppInfo";
 import AuthorInfo from "./components/AuthorInfo";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import MovieForm from "./components/MovieForm";
+import MovieEditForm from "./components/MovieEditForm";
+import "./styles/global.scss";
 const App = () => {
   return (
     <>
@@ -29,6 +31,8 @@ const App = () => {
                 <Route path="author" element={<AuthorInfo />} />
               </Route>
               <Route path="/movies" element={<Movies />} />
+              <Route path="/movies/new" element={<MovieForm />} />
+              <Route path="/movies/:id/update" element={<MovieEditForm />} />
             </Routes>
           </div>
           <Footer />

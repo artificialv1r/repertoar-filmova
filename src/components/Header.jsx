@@ -57,6 +57,18 @@ const Header = () => {
               Movies
             </Link>
           </li>
+          <li>
+            <Link
+              style={{
+                textDecoration: "none",
+                color: "black",
+                fontSize: "20px",
+              }}
+              to="/movies/new"
+            >
+              Add Movie
+            </Link>
+          </li>
         </ul>
       </nav>
     </div>

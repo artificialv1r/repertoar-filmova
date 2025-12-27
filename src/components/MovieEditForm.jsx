@@ -1,96 +1,102 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
+import { getMovieById, updateMovie } from "../services/movieService";
 
-function MovieEditForm({ movie, onUpdateMovie, onClose }) {
-  const { register, handleSubmit, formState, reset } = useForm({
-    defaultValues: movie,
-  });
+function MovieEditForm() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [movie, setMovie] = useState(null);
 
-  const onSubmit = (data) => {
-    onUpdateMovie({
-      ...movie,
-      ...data,
-    });
-    reset();
-    onClose();
-  };
+  async function loadMovie() {
+    const data = await getMovieById(id);
+    setMovie(data);
+  }
+  useEffect(() => {
+    loadMovie();
+  }, [id]);
 
-  const labelStyle = {
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-  };
+  const { register, handleSubmit, formState, reset } = useForm();
+
+  useEffect(() => {
+    if (movie) {
+      reset(movie);
+    }
+  }, [movie, reset]);
+
+  async function handleUpdate(updatedMovie) {
+    console.log(updatedMovie);
+    await updateMovie(id, updatedMovie);
+    navigate("/movies");
+  }
+
+  if (!movie) {
+    return <>Ucitavanje...</>;
+  }
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      style={{ display: "flex", flexDirection: "column", gap: "5px" }}
-    >
-      <label style={labelStyle}>
-        Naslov:
-        <input
-          type="text"
-          {...register("title", { required: "Naslov je obavezan." })}
-        />
-      </label>
-      {formState.errors.title && (
-        <p style={{ color: "red" }}>{formState.errors.title.message}</p>
-      )}
+    <section className="movie-edit-section">
+      <form onSubmit={handleSubmit(handleUpdate)}>
+        <label>
+          Naslov:
+          <input
+            type="text"
+            {...register("name", {
+              required: "Naslov je obavezan.",
+              minLength: {
+                value: 3,
+                message: "Naslov mora da sadrži najmanje 3 karaktera.",
+              },
+            })}
+          />
+        </label>
+        {formState.errors.name && <p>{formState.errors.name.message}</p>}
 
-      <label style={labelStyle}>
-        Sala:
-        <select
-          {...register("hall", {
-            required: "Sala je obavezna",
-            min: { value: 1, message: "Sala mora biti između 1 i 12" },
-            max: { value: 12, message: "Sala mora biti između 1 i 12" },
-          })}
-        >
-          <option value="">-- Izaberi --</option>
-          <option value="1">Sala 1</option>
-          <option value="2">Sala 2</option>
-          <option value="3">Sala 3</option>
-          <option value="4">Sala 4</option>
-          <option value="5">Sala 5</option>
-        </select>
-      </label>
+        <label>
+          Sala:
+          <select
+            {...register("hall", {
+              required: "Sala je obavezna",
+              min: { value: 1, message: "Sala mora biti između 1 i 12" },
+              max: { value: 12, message: "Sala mora biti između 1 i 12" },
+              valueAsNumber: true,
+            })}
+          >
+            <option value="">-- Izaberi --</option>
+            <option value="1">Sala 1</option>
+            <option value="2">Sala 2</option>
+            <option value="3">Sala 3</option>
+            <option value="4">Sala 4</option>
+            <option value="5">Sala 5</option>
+          </select>
+        </label>
 
-      <label style={labelStyle}>
-        Cena:
-        <input
-          type="number"
-          {...register("price", {
-            required: "Cena je obavezna",
-            min: { value: 1, message: "Cena mora biti veća od 0" },
-          })}
-        />
-      </label>
+        <label>
+          Cena:
+          <input
+            type="number"
+            step="any"
+            {...register("price", {
+              required: "Cena je obavezna",
+              min: { value: 1, message: "Cena mora biti veća od 0" },
+              valueAsNumber: true,
+            })}
+          />
+        </label>
 
-      <label style={labelStyle}>
-        Poster:
-        <input
-          type="text"
-          {...register("poster", { required: "Poster URL je obavezan." })}
-        />
-      </label>
+        <label>
+          Poster:
+          <input
+            type="text"
+            {...register("poster", { required: "Poster URL je obavezan." })}
+          />
+        </label>
 
-      <button
-        style={{
-          width: "fit-content",
-          marginBottom: "5px",
-          padding: "10px 15px",
-          cursor: "pointer",
-          background: "#3DB6B1",
-          color: "white",
-          borderRadius: "20px",
-          border: "none",
-          fontWeight: "bold",
-        }}
-        type="submit"
-      >
-        Sačuvaj izmene
-      </button>
-    </form>
+        <div className="btn">
+          <button type="submit">Sačuvaj izmene</button>
+        </div>
+      </form>
+    </section>
   );
 }
 
